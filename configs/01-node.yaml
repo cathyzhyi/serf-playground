@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: serf-node 
+  namespace: serf-test 
+  labels:
+    app: serf-node
+spec:
+  replicas: 4 
+  selector:
+    matchLabels:
+      app: serf-node
+  template:
+    metadata:
+      labels:
+        app: serf-node
+    spec:
+      containers:
+      - name: serf-node
+        image: ko://github.com/cathyzhyi/serf-playground/cmd/node
+        env:
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name 
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
